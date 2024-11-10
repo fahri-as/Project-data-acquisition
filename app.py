@@ -28,7 +28,7 @@ if uploaded_file:
     # Section 2: Preprocess Data
     st.header("2. Preprocess Data")
     st.write("Removing rows with missing values.")
-    preprocessed_data = dataset.dropna()
+    preprocessed_data = dataset.dropna().copy()  # Create a full copy
     st.write("Preprocessed Data Preview (First 5 Rows):")
     st.write(preprocessed_data.head())
 
@@ -43,11 +43,11 @@ if uploaded_file:
     if 'crime_type' in preprocessed_data.columns:
         # Encode categorical 'crime_type'
         le = LabelEncoder()
-        preprocessed_data['crime_type_encoded'] = le.fit_transform(preprocessed_data['crime_type'])
+        preprocessed_data.loc[:, 'crime_type_encoded'] = le.fit_transform(preprocessed_data['crime_type'])
 
         # Apply KMeans clustering
-        kmeans = KMeans(n_clusters=3, random_state=42)
-        preprocessed_data['cluster'] = kmeans.fit_predict(preprocessed_data[['crime_type_encoded']])
+        kmeans = KMeans(n_clusters=3, n_init=10, random_state=42)  # Explicit n_init
+        preprocessed_data.loc[:, 'cluster'] = kmeans.fit_predict(preprocessed_data[['crime_type_encoded']])
 
         st.write("Cluster Analysis Results (First 5 Rows):")
         st.write(preprocessed_data[['crime_type', 'cluster']].head())
@@ -90,7 +90,7 @@ if uploaded_file:
     st.subheader("Crime Trend Over Time")
     if 'crime_date' in preprocessed_data.columns:
         # Convert 'crime_date' to datetime
-        preprocessed_data['crime_date'] = pd.to_datetime(preprocessed_data['crime_date'], errors='coerce')
+        preprocessed_data.loc[:, 'crime_date'] = pd.to_datetime(preprocessed_data['crime_date'], errors='coerce')
         crime_trend = preprocessed_data.groupby(preprocessed_data['crime_date'].dt.to_period("M")).size()
         fig, ax = plt.subplots()
         crime_trend.plot(kind='line', ax=ax, color="green")
