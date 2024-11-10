@@ -86,20 +86,8 @@ if uploaded_file:
         ax.set_ylabel("Count")
         st.pyplot(fig)
 
-    # Visualization 3: Crime Trend Over Time
-    st.subheader("Crime Trend Over Time")
-    if 'crime_date' in preprocessed_data.columns:
-        # Convert 'crime_date' to datetime
-        preprocessed_data.loc[:, 'crime_date'] = pd.to_datetime(preprocessed_data['crime_date'], errors='coerce')
-        crime_trend = preprocessed_data.groupby(preprocessed_data['crime_date'].dt.to_period("M")).size()
-        fig, ax = plt.subplots()
-        crime_trend.plot(kind='line', ax=ax, color="green")
-        ax.set_title("Crime Trend Over Time")
-        ax.set_xlabel("Date")
-        ax.set_ylabel("Number of Crimes")
-        st.pyplot(fig)
 
-    # Visualization 4: Sentence Length by Crime Type
+    # Visualization 3: Sentence Length by Crime Type
     st.subheader("Sentence Length by Crime Type")
     if 'sentence_length' in preprocessed_data.columns and 'crime_type' in preprocessed_data.columns:
         fig, ax = plt.subplots(figsize=(8, 6))
