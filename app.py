@@ -75,17 +75,27 @@ if uploaded_file:
         ax.set_ylabel("Count")
         st.pyplot(fig)
 
-    # Visualization 2: Crime Distribution by Location
-    st.subheader("Crime Distribution by Location")
-    if 'location' in preprocessed_data.columns:
-        location_counts = preprocessed_data['location'].value_counts().head(10)
-        fig, ax = plt.subplots()
-        location_counts.plot(kind='bar', ax=ax, color="orange", edgecolor="black")
-        ax.set_title("Top 10 Locations with Most Crimes")
-        ax.set_xlabel("Location")
-        ax.set_ylabel("Count")
-        st.pyplot(fig)
+# Visualization 4: Cluster Count Per Crime Type
+st.subheader("Cluster Count Per Crime Type")
+if 'crime_type' in preprocessed_data.columns and 'cluster' in preprocessed_data.columns:
+    cluster_crime_counts = preprocessed_data.groupby(['crime_type', 'cluster']).size().reset_index(name='count')
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.barplot(data=cluster_crime_counts, x='crime_type', y='count', hue='cluster', ax=ax, palette='viridis')
+    ax.set_title("Cluster Count Per Crime Type")
+    ax.set_xlabel("Crime Type")
+    ax.set_ylabel("Count")
+    st.pyplot(fig)
 
+    # Visualization 2: Cluster Analysis in 2D Space
+    st.subheader("Cluster Analysis in 2D Space")
+    if 'crime_type_encoded' in preprocessed_data.columns:
+        preprocessed_data['dummy_feature'] = range(len(preprocessed_data))  # Create a dummy feature for visualization
+        fig, ax = plt.subplots(figsize=(8, 6))
+        sns.scatterplot(data=preprocessed_data, x='dummy_feature', y='crime_type_encoded', hue='cluster', palette='viridis', ax=ax)
+        ax.set_title("Clusters Visualization in 2D Space")
+        ax.set_xlabel("Dummy Feature")
+        ax.set_ylabel("Crime Type Encoded")
+        st.pyplot(fig)
 
     # Visualization 3: Sentence Length by Crime Type
     st.subheader("Sentence Length by Crime Type")
@@ -96,3 +106,5 @@ if uploaded_file:
         ax.set_xlabel("Crime Type")
         ax.set_ylabel("Sentence Length (Years)")
         st.pyplot(fig)
+
+
