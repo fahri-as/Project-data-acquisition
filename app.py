@@ -75,16 +75,16 @@ if uploaded_file:
         ax.set_ylabel("Count")
         st.pyplot(fig)
 
-# Visualization 4: Cluster Count Per Crime Type
-st.subheader("Cluster Count Per Crime Type")
-if 'crime_type' in preprocessed_data.columns and 'cluster' in preprocessed_data.columns:
-    cluster_crime_counts = preprocessed_data.groupby(['crime_type', 'cluster']).size().reset_index(name='count')
-    fig, ax = plt.subplots(figsize=(10, 6))
-    sns.barplot(data=cluster_crime_counts, x='crime_type', y='count', hue='cluster', ax=ax, palette='viridis')
-    ax.set_title("Cluster Count Per Crime Type")
-    ax.set_xlabel("Crime Type")
-    ax.set_ylabel("Count")
-    st.pyplot(fig)
+    # Visualization 4: Cluster Count Per Crime Type
+    st.subheader("Cluster Count Per Crime Type")
+    if 'crime_type' in preprocessed_data.columns and 'cluster' in preprocessed_data.columns:
+        cluster_crime_counts = preprocessed_data.groupby(['crime_type', 'cluster']).size().reset_index(name='count')
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.barplot(data=cluster_crime_counts, x='crime_type', y='count', hue='cluster', ax=ax, palette='viridis')
+        ax.set_title("Cluster Count Per Crime Type")
+        ax.set_xlabel("Crime Type")
+        ax.set_ylabel("Count")
+        st.pyplot(fig)
 
     # Visualization 2: Cluster Analysis in 2D Space
     st.subheader("Cluster Analysis in 2D Space")
@@ -107,4 +107,4 @@ if 'crime_type' in preprocessed_data.columns and 'cluster' in preprocessed_data.
         ax.set_ylabel("Sentence Length (Years)")
         st.pyplot(fig)
 
-
+    
