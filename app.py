@@ -109,7 +109,7 @@ if uploaded_file:
         st.write(preprocessed_data)
 
     # Section 3: Clustering
-    st.header("3. Finding the Best Number of Clusters with K-Means")
+    st.header("3. Analyze Data with Clustering")
 
     # Convert features to X
     # Pastikan urutan fitur sesuai: numeric lalu categorical yang telah di-encode
